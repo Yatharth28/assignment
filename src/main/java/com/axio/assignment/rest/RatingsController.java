@@ -23,25 +23,26 @@ public class RatingsController {
 
     @PostMapping("movie/submitRating")
     public ResponseEntity<Movie> submitRating(@RequestBody Movie movieRating) {
-        return new ResponseEntity<>(movieRatingServiceImpl.submitRating(movieRating), HttpStatus.CREATED);
+        Movie rating = movieRatingServiceImpl.submitRating(movieRating);
+        return new ResponseEntity<>(rating, HttpStatus.CREATED);
     }
 
     @GetMapping("movie/findRatingById/{movieId}")
     public ResponseEntity<Movie> getRatingById(@PathVariable Integer movieId) {
         Movie rating = movieRatingServiceImpl.getRatingById(movieId);
         if (rating == null) {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(rating);
+        return new ResponseEntity<>(rating, HttpStatus.OK);
     }
 
     @GetMapping("movie/findRatingByName/{movieName}")
     public ResponseEntity<Movie> getRatingByName(@PathVariable String movieName) {
         Movie rating = movieRatingServiceImpl.getRatingByName(movieName);
         if (rating == null) {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(rating);
+        return new ResponseEntity<>(rating, HttpStatus.OK);
     }
 
     @GetMapping("movie/findAllActiveMovies/{pinCode}")
