@@ -46,13 +46,16 @@ public class RatingsController {
     }
 
     @GetMapping("movie/findAllActiveMovies/{pinCode}")
-    public List<Movie> getActiveMovies(@PathVariable String pinCode) throws JsonProcessingException {
+    public ResponseEntity<List<Movie>> getActiveMovies(@PathVariable String pinCode) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
         String pincodeJson = restTemplate.getForObject(PINCODE_API_URL + pinCode, String.class);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(pincodeJson);
         String finalPincode = jsonNode.get(0).get("PostOffice").get(0).get("Pincode").asText();
-        System.out.println(finalPincode);
-        return movieRatingServiceImpl.getAllActiveMoviesByPinCode(pinCode);
+        List<Movie> allMovies = movieRatingServiceImpl.getAllActiveMoviesByPinCode(finalPincode);
+        if (allMovies == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(allMovies, HttpStatus.OK);
     }
 }
