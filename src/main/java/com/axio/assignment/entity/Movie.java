@@ -12,17 +12,17 @@ import lombok.NoArgsConstructor;
 @Table(name = "MOVIE_DETAILS")
 public class Movie {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "movie_id")
     private int movieId;
 
-    @Column(name = "movie_name")
+    @Column(name = "movie_name", nullable = false)
     private String movieName;
 
-    @Column(name = "rating")
+    @Column(name = "rating", nullable = false)
     private double rating;
 
-    @Column(name = "pin_code")
+    @Column(name = "pin_code", nullable = false)
     private String pinCode;
 
     @Column(name = "comment")
